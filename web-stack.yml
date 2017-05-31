@@ -1,0 +1,29 @@
+app:
+  autoredeploy: true
+  environment:
+    - APP_HOST=blackmailapp.rasputinlabs.com
+    - 'APP_URL=https://blackmailapp.rasputinlabs.com'
+    - MYSQL_DB=spark
+    - MYSQL_HOST=mysqldb
+    - MYSQL_PW=my-other-secret-pw
+    - MYSQL_USER=spark
+    - REDIS_HOST=redisdb
+    - REDIS_PW=<my super long 64 character password here>
+  expose:
+    - '80'
+    - '443'
+  image: 'rasputinlabs/blackmail:latest'
+  labels:
+    traefik.backend: spark
+    traefik.backend.loadbalancer.method: drr
+    traefik.enable: 'true'
+    traefik.frontend.rule: 'Host:blackmailapp.rasputinlabs.com'
+    traefik.port: '80'
+  links:
+    - 'mysql.databases:mysqldb'
+    - 'redis.databases:redisdb'
+  restart: always
+  sequential_deployment: true
+  tags:
+    - prod
+  target_num_containers: 4

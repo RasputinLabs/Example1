@@ -1,0 +1,18 @@
+mysql:
+  environment:
+    - MYSQL_DATABASE=spark
+    - MYSQL_PASSWORD=my-other-secret-pw
+    - MYSQL_ROOT_PASSWORD=my-secret-pw
+    - MYSQL_USER=spark
+  image: 'mysql:5.7'
+  tags:
+    - prod
+  volumes:
+    - '/data/mysql:/var/lib/mysql'
+redis:
+  command: /usr/local/etc/redis.conf
+  image: 'redis:3.2.9-alpine'
+  tags:
+    - prod
+  volumes:
+    - '/srv/redis/redis.conf:/usr/local/etc/redis.conf'

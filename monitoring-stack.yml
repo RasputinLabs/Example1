@@ -1,0 +1,32 @@
+grafana: # https://github.com/vegasbrianc/docker-monitoring
+  environment:
+    - HTTP_PASS=admin
+    - HTTP_USER=admin
+    - INFLUXDB_HOST=influxsrv
+    - INFLUXDB_NAME=cadvisor
+    - INFLUXDB_PASS=root
+    - INFLUXDB_PORT=8086
+    - INFLUXDB_USER=root
+  image: 'grafana/grafana:2.6.0'
+  links:
+    - 'influxdb:influxsrv'
+  ports:
+    - '3000:3000'
+  restart: always
+influxdb:
+  environment:
+    - PRE_CREATE_DB=cadvisor
+  expose:
+    - '8090'
+    - '8099'
+  image: 'tutum/influxdb:0.9'
+  ports:
+    - '8083:8083'
+    - '8086:8086'
+  restart: always
+  volumes_from:
+    - influxdb-data
+influxdb-data:
+  image: 'busybox:latest'
+  volumes:
+    - '/data/influxdb:/data'

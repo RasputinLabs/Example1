@@ -1,0 +1,15 @@
+traefik:
+  cap_add:
+    - net_bind_service
+  cap_drop:
+    - all
+  deployment_strategy: every_node
+  image: 'rasputinlabs/proxy:latest' # https://github.com/containerize-my-server/reverse-proxy
+  ports:
+    - '80:80'
+    - '443:443'
+    - '8080:8080'
+  restart: always
+  volumes:
+    - '/var/run/docker.sock:/var/run/docker.sock'
+    - /srv/proxy/certs/acme.json

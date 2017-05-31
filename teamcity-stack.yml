@@ -1,0 +1,15 @@
+teamcity-server:
+  image: 'jetbrains/teamcity-server:latest'
+  ports:
+    - '8111:8111'
+  volumes:
+    - '/srv/teamcity/data:/data/teamcity_server/datadir'
+    - '/srv/teamcity/logs:/opt/teamcity/logs'
+    - '/srv/teamcity/key:/data/teamcity_server/key'
+  #labels: # we didn't do this because the agent had difficulty connecting via SSL because it didn't recognize Let's Encrypt as a valid Certificate Authority *sigh*
+    #traefik.backend: teamcity-server
+    #traefik.enable: 'true'
+    #traefik.frontend.rule: 'Host:teamcity.rasputinlabs.com'
+    #traefik.port: '8111'
+  tags:
+    - dev

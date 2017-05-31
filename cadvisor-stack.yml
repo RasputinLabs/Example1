@@ -1,0 +1,14 @@
+cadvisor: # https://github.com/vegasbrianc/docker-monitoring
+  command: '-storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influxsrv:8086'
+  deployment_strategy: every_node # this is a separate stack because of this, could have potentially left it in the other stack...
+  image: 'google/cadvisor:v0.20.5'
+  links:
+    - 'influxdb.monitoring:influxsrv'
+  ports:
+    - '18080:8080'
+  restart: always
+  volumes:
+    - '/:/rootfs:ro'
+    - '/var/run:/var/run'
+    - '/sys:/sys:ro'
+    - '/var/lib/docker:/var/lib/docker:ro'

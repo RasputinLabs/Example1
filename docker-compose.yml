@@ -1,0 +1,44 @@
+version: "2"
+
+services:
+  web:
+    build: blackmail-beta/
+    command: dev
+    environment:
+      - APP_ENV=local
+      - APP_URL=http://localhost:8082
+      - APP_HOST=blackmail.local
+      - REDIS_HOST=redis
+      - REDIS_PW=null
+      - MYSQL_HOST=mysql
+      - MYSQL_DB=spark
+      - MYSQL_USER=spark
+      - MYSQL_PW=my-other-secret-pw
+    volumes:
+      - ./blackmail-beta/src/:/usr/share/nginx/html  
+    ports:
+      - 8082:80
+    networks:
+      - app
+    depends_on:
+      - mysql
+      - redis
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+      - MYSQL_DATABASE=spark
+      - MYSQL_USER=spark
+      - MYSQL_PASSWORD=my-other-secret-pw
+    networks:
+      - app
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+  redis:
+    image: redis:3.2.9-alpine
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
